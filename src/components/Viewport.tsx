@@ -236,6 +236,7 @@ export default function Viewport({ ecosystem, onInit, onUpdateStats, isPaused, p
           if (a.mesh) {
             scene.remove(a.mesh);
           }
+          a.destroy(); // dispose geometries and materials recursively
         }
       }
     };

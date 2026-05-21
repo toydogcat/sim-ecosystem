@@ -101,6 +101,13 @@ export class Ecosystem {
 
     // Design visual mesh and link to scene
     const mesh = agent.createMesh();
+    // Enable soft low-poly shadows on all child meshes of the agent
+    mesh.traverse((child) => {
+      if ((child as THREE.Mesh).isMesh) {
+        child.castShadow = true;
+        child.receiveShadow = true;
+      }
+    });
     this.scene.add(mesh);
     
     // Position mesh sync
@@ -167,6 +174,7 @@ export class Ecosystem {
       if (a.mesh) {
         this.scene.remove(a.mesh);
       }
+      a.destroy(); // recursive GPU asset cleanup to prevent memory leaks
     }
     this.agents = [];
     this.history = [];
@@ -300,6 +308,14 @@ export class Ecosystem {
             targetMate.reproductiveUrge = 0;
             
             matingTriggered = true;
+          } else {
+            // Mating attempt failed (random chance). Set a brief attempt cooldown
+            // and decay urge slightly to prevent infinite frame-by-frame spamming.
+            // This makes the reproduction rate slider effective at controlling breeding speed!
+            agent.reproductionCooldown = 20;
+            targetMate.reproductionCooldown = 20;
+            agent.reproductiveUrge = Math.max(0, agent.reproductiveUrge - 8);
+            targetMate.reproductiveUrge = Math.max(0, targetMate.reproductiveUrge - 8);
           }
         }
       }
@@ -319,7 +335,7 @@ export class Ecosystem {
           }
         }
 
-        if (closestFood) {
+        if (closestFood && !closestFood.isDead) {
           agent.state = AgentState.Pursue;
 
           // Birds swoop downward on Y axis to hunt crawl insects
@@ -333,9 +349,21 @@ export class Ecosystem {
 
           // Contact bite collision check
           const chewRadius = (agent.size + closestFood.size) * 0.95;
-          const currentDistance = agent.position.distanceTo(closestFood.position);
           
-          if (currentDistance <= chewRadius) {
+          // Special contact check with vertical tolerance when a bird is involved.
+          // Allows flying predators to eat ground prey, and ground predators to pounce on low-flying birds.
+          let isClose = false;
+          if (agent.species === Species.Bird || closestFood.species === Species.Bird) {
+            const dx = agent.position.x - closestFood.position.x;
+            const dz = agent.position.z - closestFood.position.z;
+            const dy = Math.abs(agent.position.y - closestFood.position.y);
+            const distXZ = Math.sqrt(dx * dx + dz * dz);
+            isClose = distXZ <= chewRadius && dy <= 4.0;
+          } else {
+            isClose = agent.position.distanceTo(closestFood.position) <= chewRadius;
+          }
+          
+          if (isClose && !closestFood.isDead) {
             // Predator eats prey!
             closestFood.isDead = true;
             closestFood.deathReason = 'eaten';
@@ -388,6 +416,7 @@ export class Ecosystem {
         if (agent.mesh) {
           this.scene.remove(agent.mesh);
         }
+        agent.destroy(); // recursive GPU asset cleanup to prevent memory leaks
       } else {
         survivingAgents.push(agent);
       }

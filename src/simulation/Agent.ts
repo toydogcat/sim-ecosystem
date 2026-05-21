@@ -61,6 +61,30 @@ export class Agent {
   }
 
   /**
+   * Recursive disposal helper to clean up GPU assets and avoid memory leaks
+   */
+  public destroy(): void {
+    if (this.mesh) {
+      this.mesh.traverse((child) => {
+        if ((child as THREE.Mesh).isMesh) {
+          const mesh = child as THREE.Mesh;
+          if (mesh.geometry) {
+            mesh.geometry.dispose();
+          }
+          if (mesh.material) {
+            if (Array.isArray(mesh.material)) {
+              mesh.material.forEach((m) => m.dispose());
+            } else {
+              mesh.material.dispose();
+            }
+          }
+        }
+      });
+      this.mesh = null;
+    }
+  }
+
+  /**
    * Builds the low-poly THREE.js visual representation.
    * This is overridden by children.
    */
@@ -196,8 +220,10 @@ export class Agent {
       this.position.y = this.size / 2;
     } else {
       // Keep birds within reasonable flight altitudes
-      if (this.position.y < 3.0) {
-        this.position.y = 3.0;
+      // Allow swooping down to y = 0.2 during pursuit or eating to catch crawling insects
+      const minAltitude = (this.state === AgentState.Pursue || this.state === AgentState.Eat) ? 0.2 : 3.0;
+      if (this.position.y < minAltitude) {
+        this.position.y = minAltitude;
         this.velocity.y = Math.abs(this.velocity.y) * 0.5;
       } else if (this.position.y > 18.0) {
         this.position.y = 18.0;
