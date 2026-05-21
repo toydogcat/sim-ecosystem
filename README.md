@@ -2,6 +2,8 @@
 
 這是一個使用 React、Three.js 和 Tailwind CSS 開發的 3D 生態系統模擬器。你可以觀察植物、昆蟲、草食動物、鳥類和肉食動物在一個動態環境中的互動。
 
+[Demo](https://toydogcat.github.io/sim-ecosystem/)
+
 ## 特色
 
 - **3D 視覺化**：使用 Three.js 呈現的動態生態環境。
