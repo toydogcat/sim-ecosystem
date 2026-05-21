@@ -38,6 +38,23 @@ export default function App() {
   const t = TRANSLATIONS[lang];
 
   /**
+   * Vercount / Busuanzi stats integration
+   */
+  useEffect(() => {
+    // Only inject if not already present
+    if (document.querySelector('script[data-vercount="true"]')) {
+      return;
+    }
+
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = 'https://www.vercount.one/js';
+    script.crossOrigin = 'anonymous';
+    script.dataset.vercount = 'true';
+    document.body.appendChild(script);
+  }, []);
+
+  /**
    * Captures references to the loaded ecosystem engine
    */
   const handleInit = useCallback((eco: Ecosystem) => {

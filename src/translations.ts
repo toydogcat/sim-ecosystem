@@ -92,7 +92,12 @@ export const TRANSLATIONS = {
     matrixActive: "模擬單元工作正常",
 
     // Chart
-    chartTitle: "生態種群 Lotka-Volterra 波動曲線"
+    chartTitle: "生態種群 Lotka-Volterra 波動曲線",
+
+    // Vercount
+    siteViews: "總訪問量",
+    pageViews: "頁面查看",
+    visitors: "訪客數"
   },
   en: {
     // Header
@@ -180,6 +185,11 @@ export const TRANSLATIONS = {
     matrixActive: "Matrix Active",
 
     // Chart
-    chartTitle: "Lotka-Volterra Population Fluctuations"
+    chartTitle: "Lotka-Volterra Population Fluctuations",
+
+    // Vercount
+    siteViews: "Site Views",
+    pageViews: "Page Views",
+    visitors: "Visitors"
   }
 };

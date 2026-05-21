@@ -484,9 +484,23 @@ export default function Sidebar({
         )}
 
         {/* Informative Credit Disclaimer footer */}
-        <div className="mt-auto pt-6 border-t border-white/5 border-dashed text-[10px] text-slate-600 font-mono flex items-center justify-between">
-          <span>{t.simStable}</span>
-          <span>{t.matrixActive} ●</span>
+        <div className="mt-auto pt-6 border-t border-white/5 border-dashed text-[10px] text-slate-600 font-mono">
+          <div className="flex items-center justify-between mb-2">
+            <span>{t.simStable}</span>
+            <span>{t.matrixActive} ●</span>
+          </div>
+          
+          <div className="flex flex-wrap gap-x-4 gap-y-1 opacity-60 hover:opacity-100 transition-opacity">
+            <span id="busuanzi_container_site_pv" className="hidden">
+              {t.siteViews}: <b id="busuanzi_value_site_pv">-</b>
+            </span>
+            <span id="busuanzi_container_page_pv" className="hidden">
+              {t.pageViews}: <b id="busuanzi_value_page_pv">-</b>
+            </span>
+            <span id="busuanzi_container_site_uv" className="hidden">
+              {t.visitors}: <b id="busuanzi_value_site_uv">-</b>
+            </span>
+          </div>
         </div>
 
       </div>
