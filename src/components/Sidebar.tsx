@@ -63,7 +63,7 @@ export default function Sidebar({
   };
 
   return (
-    <div className="w-full lg:w-96 flex flex-col h-full bg-[#161920] border-t lg:border-t-0 lg:border-l border-white/10 overflow-y-auto select-none font-sans scrollbar-thin">
+    <div className="w-full lg:w-96 flex flex-col flex-1 lg:flex-none lg:h-full bg-[#161920] border-t lg:border-t-0 lg:border-l border-white/10 overflow-y-auto select-none font-sans scrollbar-thin">
       
       {/* 1. Header Branks */}
       <div className="p-5 border-b border-white/10 bg-[#0c0e12]/60 sticky top-0 z-10 backdrop-blur-md">

@@ -156,7 +156,7 @@ export default function App() {
   }, [ecosystem, params.mapSize]);
 
   return (
-    <div id="app-root-container" className="flex flex-col h-screen w-screen bg-[#0c0e12] text-slate-300 font-sans overflow-hidden select-none">
+    <div id="app-root-container" className="flex flex-col h-[100dvh] w-screen bg-[#0c0e12] text-slate-300 font-sans overflow-hidden select-none">
       
       {/* Sleek Interface Header Bar */}
       <header className="h-14 border-b border-white/10 flex items-center justify-between px-6 bg-[#161920] shrink-0">
@@ -223,7 +223,7 @@ export default function App() {
       <main className="flex-1 flex flex-col lg:flex-row overflow-hidden min-h-0">
         
         {/* Viewport Render Side */}
-        <div className="flex-1 relative h-3/5 lg:h-full border-b lg:border-b-0 lg:border-r border-white/10 bg-gradient-to-br from-[#0f1115] to-[#1a1c23]">
+        <div className="flex-none h-3/5 lg:h-full lg:flex-1 relative border-b lg:border-b-0 lg:border-r border-white/10 bg-gradient-to-br from-[#0f1115] to-[#1a1c23]">
           
           <Viewport
             ecosystem={ecosystem}
